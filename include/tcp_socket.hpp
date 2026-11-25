@@ -12,9 +12,11 @@ protected:
 
     TcpSocket(const TcpSocket&) = delete;
     TcpSocket& operator=(const TcpSocket&) = delete;
+    TcpSocket(TcpSocket&&) noexcept;
 
     void Connect(const std::string& address, std::uint16_t port);
     void Send(const std::string& data) const;
+    void Shutdown() const noexcept;
 
     // Возвращает часть потока. Пустая строка означает, что собеседник закрыл соединение на запись.
     std::string Receive() const;

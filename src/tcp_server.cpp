@@ -9,3 +9,10 @@ void TcpServer::Accept()
 {
     AcceptFrom(listener_);
 }
+
+TcpClient TcpServer::AcceptClient()
+{
+    TcpClient client;
+    client.AcceptFrom(listener_);
+    return client;
+}

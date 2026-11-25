@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-// TCP передаёт поток байтов. В консольном примере конец сообщения отмечаем '\n'.
+// TCP передаёт поток байтов. Конец сообщения обозначается символом '\n'.
 template <typename Socket>
 std::optional<std::string> ReadLine(const Socket& socket, std::string& pending)
 {

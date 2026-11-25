@@ -25,3 +25,5 @@ if(WIN32)
 endif()
 
 add_subdirectory(client_server)
+add_subdirectory(rock_paper_scissors)
+add_subdirectory(chat)

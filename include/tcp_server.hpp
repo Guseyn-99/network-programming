@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tcp_socket.hpp"
+#include "tcp_client.hpp"
 
 class TcpServer final : private TcpSocket
 {
@@ -10,6 +10,7 @@ public:
 
     void Listen(const std::string& address, std::uint16_t port);
     void Accept();
+    TcpClient AcceptClient();
 
 private:
     TcpSocket listener_;

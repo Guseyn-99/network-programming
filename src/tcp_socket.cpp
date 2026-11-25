@@ -110,6 +110,7 @@ struct TcpSocket::Handle
 };
 
 TcpSocket::TcpSocket() = default;
+TcpSocket::TcpSocket(TcpSocket&&) noexcept = default;
 TcpSocket::~TcpSocket() = default;
 
 void TcpSocket::Connect(const std::string& address, std::uint16_t port)
@@ -141,7 +142,7 @@ void TcpSocket::BindAndListen(const std::string& address, std::uint16_t port)
     if (::bind(socket->value, reinterpret_cast<const sockaddr*>(&endpoint),
                static_cast<AddressSize>(sizeof(endpoint))) != 0)
         throw std::system_error(LastSocketError(), std::system_category(), "bind");
-    if (::listen(socket->value, 1) != 0)
+    if (::listen(socket->value, SOMAXCONN) != 0)
         throw std::system_error(LastSocketError(), std::system_category(), "listen");
 
     handle_ = std::move(socket);
@@ -212,4 +213,16 @@ std::string TcpSocket::Receive() const
         if (!IsInterrupted(error))
             throw std::system_error(error, std::system_category(), "recv");
     }
+}
+
+void TcpSocket::Shutdown() const noexcept
+{
+    if (!handle_)
+        return;
+
+#ifdef _WIN32
+    ::shutdown(handle_->value, SD_BOTH);
+#else
+    ::shutdown(handle_->value, SHUT_RDWR);
+#endif
 }
